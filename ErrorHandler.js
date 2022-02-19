@@ -1,37 +1,8 @@
-/**
- * DSAG Sample Error Handler
- * --------------------------------------------------------------------------------------------------------
- * This error handler was developed as part of the DSAG SAPUI5 Best Practice Guide. It can be used as a basic error handler and optionally supplemented with further features. 
- * For example, we have an extended version in use at REWE Group, 
- * which, in addition to the parsing capabilities of the OData message parser provided by the SAPUI5 framework, parses additional error messages in XML format and 
- * as well as replace or ignore certain error messages.<br>
- * If this error handler is created when the component is initialised, 
- * it outputs all messages received via the Message Manager from the OData Service in the control that is intended by the SAP Fiori Guidelines. 
- * Thus, error messages are output in a message box and success messages via a message toast. 
- * If several messages are sent, a message view with all messages is displayed instead of the message box or message toast.<br>
- * Using the method {@link module:controller/ErrorHandler#addModelToHandle} it is possible 
- * to activate the error handling for further models in addition to the default model.<br>
- * The error handler recognises independently whether it is an OData V2 or V4 model, 
- * and processes the messages received by the SAPUI5 Message Handler for both OData Model types.<br>
- * In addition, the methods {@link module:controller/ErrorHandler#displayError}, {@link module:controller/ErrorHandler#displayWarning}, 
- * {@link module:controller/ErrorHandler#displayInformation} and {@link module:controller/ErrorHandler#displaySuccess} 
- * can be used to display messages from the application code. These are also output in the correct control and, in the case of multiple messages, in a message view.<br>
- * A prerequisite for the correct functioning of the error handler is that the getContentDensityClass method is defined in the Component.js (see the corresponding 
- * <a href="https://experience.sap.com/fiori-design-web/cozy-compact/">SAP Fiori Guidelines article</a>. 
- * and the Developer Guide to Content Density linked therein).
- * @module controller/ErrorHandler
- * @author Tobias Kessel <tobias.kessel@rewe-group.com>
- */
+var BaseObject = require('sap/ui/base/Object');
+var MessageBox = require('sap/m/MessageBox');
 
- sap.ui.define([
-	"sap/ui/base/Object",
-	"sap/m/MessageBox"
-], function (UI5Object, MessageBox) {
-	"use strict";
-
-	return UI5Object.extend("de.marianzeis.errorhandler.ErrorHandler", {
-
-		// ************************************************************************************************************
+module.exports = class ErrorHandler extends BaseObject {
+// ************************************************************************************************************
 		// Constructor
 		// ************************************************************************************************************
 
@@ -42,7 +13,8 @@
 		 * @param {sap.ui.core.UIComponent} oComponent Reference to the component of the app
 		 * @method module:controller/ErrorHandler#constructor
 		 */
-		constructor: function (oComponent) {
+		 constructor(oComponent) {
+			super()
 			this._oComponent = oComponent;
 			this._bMessageOpen = false;
 			this._aMessages = [];
@@ -56,7 +28,7 @@
 					this.addModelToHandle(oModel);
 				}
 			}
-		},
+		}
 
 		// ************************************************************************************************************
 		// Public Methods
@@ -68,7 +40,7 @@
 		 * @param {object} oModel OData V2 or V4 Model
 		 * @method module:controller/ErrorHandler#addModelToHandle
 		 */
-		addModelToHandle: function (oModel) {
+		addModelToHandle(oModel) {
 			if (oModel) {
 				var oMessageManager = sap.ui.getCore().getMessageManager();
 				if (oMessageManager) {
@@ -99,7 +71,7 @@
 					}
 				}
 			}
-		},
+		}
 
 		/**
 		 * The method displayError can be used to display an error message from the application. 
@@ -108,9 +80,9 @@
 		 * @param {string} sMessage The error message to be output
 		 * @method module:controller/ErrorHandler#displayError
 		 */
-		displayError: function (sMessage) {
+		displayError(sMessage) {
 			this._displayTextMessage(sMessage, "Error");
-		},
+		}
 
 		/**
 		 * The method displayWarning can be used to display a warning message from the application. 
@@ -119,9 +91,9 @@
 		 * @param {string} sMessage Die auszugebende Warnungsmeldung
 		 * @method module:controller/ErrorHandler#displayWarning
 		 */
-		displayWarning: function (sMessage) {
+		displayWarning(sMessage) {
 			this._displayTextMessage(sMessage, "Warning");
-		},
+		}
 
 		/**
 		 * The method displayInformation can be used to display an information message from the application. 
@@ -130,9 +102,9 @@
 		 * @param {string} sMessage Die auszugebende Informationsmeldung
 		 * @method module:controller/ErrorHandler#displayInformation
 		 */
-		displayInformation: function (sMessage) {
+		displayInformation(sMessage) {
 			this._displayTextMessage(sMessage, "Information");
-		},
+		}
 
 		/**
 		 * The method displaySuccess can be used to display a success message from the application. 
@@ -141,9 +113,9 @@
 		 * @param {string} sMessage Die auszugebende Erfolgsmeldung
 		 * @method module:controller/ErrorHandler#displaySuccess
 		 */
-		displaySuccess: function (sMessage) {
+		displaySuccess(sMessage) {
 			this._displayTextMessage(sMessage, "Success");
-		},
+		}
 
 		// ************************************************************************************************************
 		// Private Methods: Processing of Messages
@@ -155,7 +127,7 @@
 		 * @param {object} oEvent The triggering event
 		 * @method module:controller/ErrorHandler#_onNewMessageFromV2Service
 		 */
-		_onNewMessageFromV2Service: function (oEvent) {
+		_onNewMessageFromV2Service(oEvent) {
 			// The new messages are located in the event parameter newMessages:
 			var aNewMessages = oEvent.getParameter("newMessages");
 			// Add all new messages to the array this._aMessages via the _addMessageToMessages method 
@@ -170,7 +142,7 @@
 			if (this._aMessages.length) {
 				this._displayMessages();
 			}
-		},
+		}
 
 		/**
 		 * The _onNewMessageFromV4Service method displays messages from an OData V4 service.
@@ -178,7 +150,7 @@
 		 * @param {object} oEvent The triggering event
 		 * @method module:controller/ErrorHandler#_onNewMessageFromV4Service
 		 */
-		_onNewMessageFromV4Service: function (oEvent) {
+		_onNewMessageFromV4Service(oEvent) {
 			var oMessageManager = sap.ui.getCore().getMessageManager();
 			var oEventSource = oEvent.getSource();
 			if (oEventSource && oMessageManager) {
@@ -200,7 +172,7 @@
 					}
 				}
 			}
-		},
+		}
 
 		/**
 		 * The _displayTextMessage method brings a message to be displayed.
@@ -209,7 +181,7 @@
 		 * @param {string} sType Type of message (error, warning, information, success)
 		 * @method module:controller/ErrorHandler#_displayTextMessage
 		 */
-		_displayTextMessage: function (sMessage, sType) {
+		_displayTextMessage(sMessage, sType) {
 			// Create message object:
 			var oMessage = {
 				message: sMessage,
@@ -219,8 +191,8 @@
 			// if there is not already an identical message in it:
 			this._addMessageToMessages(oMessage);
 			// Put all messages on display:
-			this._displayMessages();
-		},
+			thi._displayMessages();
+		}
 
 		/**
 		 * The _addMessageToMessages method adds the message oMessage to the array this._aMessages if there is no identical message in it yet.  
@@ -229,7 +201,7 @@
 		 * @param {object} oMessage Object of the message to be displayed
 		 * @method module:controller/ErrorHandler#_addMessageToMessages
 		 */
-		_addMessageToMessages: function (oMessage) {
+		_addMessageToMessages(oMessage) {
 			var bFound = false;
 			// First, add a punctuation mark to the end of the message using the _setPunctuationMark method, if the message does not already end with it.
 			// We do this because OData services generated by the SAP Gateway sometimes send the same message twice, once with and once without punctuation.
@@ -248,7 +220,7 @@
 			if (!bFound) {
 				this._aMessages.push(oMessage);
 			}
-		},
+		}
 
 		// ************************************************************************************************************
 		// Private methods: Processing of messages
@@ -262,7 +234,7 @@
 		 * @private
 		 * @method module:controller/ErrorHandler#_displayMessages
 		 */
-		_displayMessages: function () {
+		_displayMessages() {
 			// Close all output controls.
 			// The messages are not lost because they are stored in this._aMessages.
 			if (this._bMessageOpen) {
@@ -286,7 +258,7 @@
 			if (this._aMessages.length > 1) {
 				this._displayMessageView();
 			}
-		},
+		}
 
 		/**
 		 * The _displaySingleMessage method displays a single message depending on the type (error, warning, information, success) in the corresponding control. 
@@ -294,7 +266,7 @@
 		 * @private
 		 * @method module:controller/ErrorHandler#_displaySingleMessage
 		 */
-		_displaySingleMessage: function () {
+		_displaySingleMessage() {
 			if (this._aMessages.length) {
 				var oMessage = this._aMessages[0];
 				if (this._bMessageOpen) {
@@ -328,14 +300,14 @@
 					break;
 				}
 			}
-		},
+		}
 
 		/**
 		 * The _displayMessageView method displays the collection of messages in the array this._aMessages in a message view. 
 		 * @private
 		 * @method module:controller/ErrorHandler#_displayMessageView
 		 */
-		_displayMessageView: function () {
+		_displayMessageView() {
 			// In addition to the message to be displayed, the message view itself must also be passed a type (error, warning, etc.). 
 			// Here, with several messages of different types, we decide on the "hardest" one. 
 			// In the case of an error and a warning, for example, the message view is generated with the type error. 
@@ -389,9 +361,9 @@
 				contentWidth: "300px",
 				verticalScrolling: false
 			});
-			this._oMessageViewDialog.addStyleClass(this._oComponent.getContentDensityClass());
+			// this._oMessageViewDialog.addStyleClass(this._oComponent.getContentDensityClass());
 			this._oMessageViewDialog.open();
-		},
+		}
 
 		// ************************************************************************************************************
 		// Private Methods: Helper Methods
@@ -404,7 +376,7 @@
 		 * @returns {string} The message with punctuation added if necessary
 		 * @method module:controller/ErrorHandler#_setPunctuationMark
 		 */
-		_setPunctuationMark: function (sMessage) {
+		_setPunctuationMark(sMessage) {
 			if (sMessage.length > 0) {
 				var sLastLetter = sMessage[sMessage.length - 1];
 				// Check the last character to see if it is a punctuation mark:
@@ -419,7 +391,7 @@
 				}
 			}
 			return sMessage;
-		},
+		}
 
 		/**
 		 * The _getHardestSeverity method determines the "hardest" message type (error, warning, information, success) from the array this._aMessages.
@@ -428,7 +400,7 @@
 		 * @returns {string} The hardest message type (error, warning, information, success)
 		 * @method module:controller/ErrorHandler#_getHardestSeverity
 		 */
-		_getHardestSeverity: function () {
+		_getHardestSeverity() {
 			var bWarningFound = false;
 			var bInformationFound = false;
 			var bSuccessFound = false;
@@ -457,7 +429,7 @@
 				return "Success";
 			}
 			return "None";
-		},
+		}
 
 		/**
 		 * The _getMessageBoxConfiguration method returns the configuration for the message box to be displayed.
@@ -465,10 +437,10 @@
 		 * @method module:controller/ErrorHandler#_getMessageBoxConfiguration
 		 * @returns {object} Object for message box configuration consisting of id, styleClass, CLOSE action and onClose event handler.
 		 */
-		_getMessageBoxConfiguration: function () {
+		_getMessageBoxConfiguration() {
 			return {
 				id: "errorHandlerMessageBox",
-				styleClass: this._oComponent.getContentDensityClass(),
+				// styleClass: this._oComponent.getContentDensityClass(),
 				actions: [MessageBox.Action.CLOSE],
 				onClose: function () {
 					// Event handler for closing the message box.
@@ -479,5 +451,5 @@
 				}.bind(this)
 			};
 		}
-	});
-});
+}
+
