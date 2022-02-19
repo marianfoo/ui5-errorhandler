@@ -1,0 +1,16 @@
+{
+  "generator-ui5-library": {
+    "libraryname": "errorhandler",
+    "namespace": "de.marianzeis",
+    "framework": "OpenUI5",
+    "frameworkVersion": "1.86.3",
+    "author": "marianfoo",
+    "newdir": false,
+    "namespaceURI": "de/marianzeis",
+    "librarynamespace": "de.marianzeis.errorhandler",
+    "librarynamespaceURI": "de/marianzeis/errorhandler",
+    "librarybasepath": "../../../",
+    "frameworklowercase": "openui5",
+    "setupCompleted": true
+  }
+}
