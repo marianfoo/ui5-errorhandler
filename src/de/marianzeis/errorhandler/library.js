@@ -23,7 +23,8 @@ sap.ui.define([
 		],
 		interfaces: [],
 		controls: [
-			"de.marianzeis.errorhandler.Example"
+			"de.marianzeis.errorhandler.Example",
+			"de.marianzeis.errorhandler.ErrorHandler"
 		],
 		elements: [],
 		noLibraryCSS: false // if no CSS is provided, you can disable the library.css load here

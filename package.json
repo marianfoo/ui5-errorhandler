@@ -1,7 +1,7 @@
 {
-  "name": "errorhandler",
-  "version": "1.0.0",
-  "private": true,
+  "name": "@marianfoo/ui5-errorhandler",
+  "version": "0.0.1",
+  "private": false,
   "devDependencies": {
     "@ui5/cli": "^2.9.3",
     "karma": "^6.1.1",
