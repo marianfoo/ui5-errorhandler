@@ -1,9 +1,9 @@
 specVersion: "2.2"
 type: module
 metadata:
-  name: errorhandler
+  name: ui5-cc-errorhandler
 
 resources:
   configuration:
     paths:
-      "/resources/de/marianzeis/ui5-errorhandler/": "./"
+      "/resources/cc/errorhandler/": "./"

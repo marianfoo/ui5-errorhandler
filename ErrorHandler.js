@@ -4,7 +4,7 @@ sap.ui.define([
   ], function (SapObject, MessageBox) {
 		"use strict";
   
-		return SapObject.extend("de.marianzeis.ui5-errorhanlder.ErrorHandler", {
+		return SapObject.extend("de.marianzeis.ui5-errorhandler.ErrorHandler", {
   
 			  /**
 		   * Constructor Method of the error handler. Initialises the error handler for the default model of the component.
